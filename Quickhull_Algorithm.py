@@ -1,59 +1,94 @@
-def findSide(p1, p2, p):
-	val = (p[1] - p1[1]) * (p2[0] - p1[0]) - (p2[1] - p1[1]) * (p[0] - p1[0])
-	if (val > 0):
-		return 1
-	if (val < 0):
-		return -1
-	return 0;
+import math
+from graphs import showGraph
 
-def lineDist(p1, p2, p):
-	return abs((p[1] - p1[1]) * (p2[0] - p1[0]) - (p2[1] - p1[1]) * (p[0] - p1[0]))
+def createRegion(x1, x2, v):
+    above = []
+    below = []
+    
+    if x2[0] - x1[0] == 0:
+        return above, below
+    
+    m = (x2[1] - x1[1]) / (x2[0] - x1[0])
+    c = -m * x1[0] + x1[1]
+    
+    for coord in v:
+        if coord[1] > m * (coord[0]) + c:
+            above.append(coord)
+        elif coord[1] < m * (coord[0]) + c:
+            below.append(coord)
+    
+    return above, below
 
-def quickHull(a, n, p1, p2, side):
-    ind = -1;
-    max_dist = 0;
-
-    for i in range(n):
-        temp = lineDist(p1, p2, a[i])
-        if ((findSide(p1, p2, a[i]) == side) and (temp > max_dist)):
-            ind = i
-            max_dist = temp
-
-    if (ind == -1):
-        if p1 not in hull:
-            hull.append(p1)
-        elif p2 not in hull:
-            hull.append(p2)
-        return
-
-    quickHull(a, n, a[ind], p1, -findSide(a[ind], p1, p2))
-    quickHull(a, n, a[ind], p2, -findSide(a[ind], p2, p1))
+def findDistance(x1, x2, x3):
+    
+    a = x1[1] - x2[1]
+    b = x2[0] - x1[0]
+    c = x1[0] * x2[1] - x2[0] * x1[1]  
+    
+    return abs(a*x3[0] + b*x3[1] + c)/math.sqrt(a*a + b*b)
 
 
-def printHull(a, n):
-    if (n < 3):
-        console.log("Convex hull not possible")
-        return
-    min_x = 0
-    max_x = 0
-    for i in range(n):
-        if (a[i][0] < a[min_x][0]):
-            min_x = i
-        if (a[i][0] > a[max_x][0]):
-            max_x = i
+# Calculate the convex hull of a set of vertices v
+# 
+def quickHull2(x1, x2, region, side):
+    if region == [] or x1 is None or x2 is None:
+        return []
+    
+    convexHull = []
+    
+    furthestDistance = -1
+    furthestPoint = None
+    
+    for point in region:
+        distance = findDistance(x1, x2, point)
+        if distance > furthestDistance:
+            furthestDistance = distance
+            furthestPoint = point
             
-    quickHull(a, n, a[min_x], a[max_x], 1)
+            
+    convexHull += [furthestPoint]
+    region.remove(furthestPoint)
     
-    quickHull(a, n, a[min_x], a[max_x], -1)
+    point1above, point1below = createRegion(x1, furthestPoint, region)
+    point2above, point2below = createRegion(x2, furthestPoint, region)
+    
+    if side == "above":
+        convexHull += quickHull2(x1, furthestPoint, point1above, side)
+        convexHull += quickHull2(furthestPoint, x2, point2above, side)
+    else:
+        convexHull += quickHull2(x1, furthestPoint, point1below, side)
+        convexHull += quickHull2(furthestPoint, x2, point2below, side)
+        
+    return convexHull
 
-    print("The points in Convex Hull are:")
- 
-    for point in hull:
-        print(point)
+
+def quickHull(vertices):
+    N = len(vertices)
+    if (N <= 2):
+        print("Convex hull not possible")
+        return
+    convexHull = []
+    
+    # Finds the nearest and furthest away points on the x-axis
+    sortedPoints = sorted(vertices, key=lambda x: x[0])
+    x1 = sortedPoints[0]
+    x2 = sortedPoints[-1]
+    
+    convexHull += [x1, x2]
+    
+    sortedPoints.pop(0)
+    sortedPoints.pop(-1)
+    
+    # Determine the points located above and below the line
+    above, below = createRegion(x1, x2, sortedPoints)
+    convexHull += quickHull2(x1, x2, above, "above")
+    convexHull += quickHull2(x1, x2, below, "below")
+    
+    sortedHull = sorted(convexHull, key=lambda x: x[0])
+    
+    return sortedHull
     
 
-hull = [];
+vertices = [[0, 3], [1, 1], [2, 2], [4, 4], [0, 0], [1, 2], [3, 1], [3, 3]]
 
-a = [[0, 3], [1, 1], [2, 2], [4, 4], [0, 0], [1, 2], [3, 1], [3, 3]]
-n = len(a);
-printHull(a, n);
+showGraph(vertices, quickHull(vertices))

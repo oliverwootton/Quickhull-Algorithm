@@ -1,7 +1,7 @@
 import math
 from graphs import showGraph
 
-def createRegion(x1, x2, v):
+def partition(x1, x2, v):
     """
     Partition the coordinates to be below the line x1-x2
     
@@ -91,11 +91,11 @@ def quickHull2(x1, x2, region, side):
     # Remove the point that is now apart of the convex hull
     region.remove(furthestPoint)
     
-    # determine the segments formed from two line x1-furthestPoint and x2-furthestPoint
-    point1above, point1below = createRegion(x1, furthestPoint, region)
-    point2above, point2below = createRegion(x2, furthestPoint, region)
+    # determine the partition formed from two line x1-furthestPoint and x2-furthestPoint
+    point1above, point1below = partition(x1, furthestPoint, region)
+    point2above, point2below = partition(x2, furthestPoint, region)
     
-    # Only use the segments in the same direction (opposite direction is contained in the convex hull)
+    # Only use the partition in the same direction (opposite direction is contained in the convex hull)
     if side == "above":
         convexHull += quickHull2(x1, furthestPoint, point1above, side)
         convexHull += quickHull2(furthestPoint, x2, point2above, side)
@@ -135,7 +135,7 @@ def quickHull(vertices):
     sortedPoints.pop(-1)
     
     # Determine the points located above and below the line
-    above, below = createRegion(x1, x2, sortedPoints)
+    above, below = partition(x1, x2, sortedPoints)
     convexHull += quickHull2(x1, x2, above, "above")
     convexHull += quickHull2(x1, x2, below, "below")
     

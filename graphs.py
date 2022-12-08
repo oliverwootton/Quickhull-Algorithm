@@ -46,7 +46,6 @@ def showGraph(vertices, convexHull):
     # Function to display a before and after graph
     for i in range(2):
         plotGraph(sorted(vertices, key=lambda x: x[0]), i, convexHull)
-        print(i)
 
     # function to show the plot
     plt.show()

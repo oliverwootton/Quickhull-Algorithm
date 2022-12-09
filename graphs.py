@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Splits the vertices into x and y values
 def points(vertices):
@@ -9,43 +10,34 @@ def points(vertices):
         y.append(coord[1])
     return x, y
 
-def plotGraph(vertices, n, convexHull):
+def plotGraph(vertices, convexHull):
     # Splits the vertices into x and y values
+    
     x, y = points(vertices)
     
-    f = plt.figure(n)
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 3))
 
     # Plotting the points
-    if n == 0:
-        plt.plot(x, y, marker='o', linestyle = 'none' ,markerfacecolor='green', markersize=6)
-        # Giving a title to my graph
-        plt.title('Graph of points without convex hull')
-    else:
-        x2, y2 = points(convexHull)
-        # Joins the convex hull to itself to show the area covered
-        x2.append(x2[0])
-        y2.append(y2[0])
-        plt.plot(x, y, marker='o', linestyle = 'none' ,markerfacecolor='green', markersize=6)
-        plt.plot(x2, y2, marker='o', linestyle = 'dashed' ,markerfacecolor='red', markersize=6)
-        # Giving a title to my graph
-        plt.title('Graph of points with convex hull')
-    
-    # This sorts the y values from lowest to highest
-    sortedY = sorted(y, key=lambda x: x)
-    
-    # setting x and y axis range
-    plt.ylim(sortedY[0]-1, sortedY[-1]+1)
-    plt.xlim(x[0]-1, x[-1]+1)
-
-    # naming the x axis
-    plt.xlabel('x - axis')
-    # naming the y axis
-    plt.ylabel('y - axis')
+    for ax in (ax1, ax2):
+        ax.plot(x, y, '.', color='k')
+        if ax == ax1:
+            ax.set_title('Given points')
+        else:
+            ax.set_title('Convex hull')
+            x2, y2 = points(convexHull)
+            # Joins the convex hull to itself to show the area covered
+            x2.append(x2[0])
+            y2.append(y2[0])
+            ax.plot(x2, y2, 'o', mec='r', color='none', lw=1, markersize=10)
+        ax.set_xticks(range(x[-1] + 2))
+        # This sorts the y values from lowest to highest
+        sortedY = sorted(y, key=lambda x: x)
+        ax.set_yticks(range(sortedY[-1] + 2))
     
 def showGraph(vertices, convexHull):
     # Function to display a before and after graph
-    for i in range(2):
-        plotGraph(sorted(vertices, key=lambda x: x[0]), i, convexHull)
+    
+    plotGraph(sorted(vertices, key=lambda x: x[0]), convexHull)
 
     # function to show the plot
     plt.show()

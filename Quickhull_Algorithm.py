@@ -139,9 +139,19 @@ def quickHull(vertices):
     convexHull += quickHull2(x1, x2, above, "above")
     convexHull += quickHull2(x1, x2, below, "below")
     
-    return sorted(convexHull, key=lambda x: x[0])
+    return convexHull
     
 
-vertices = [[0, 3], [1, 1], [2, 2], [4, 4], [0, 0], [1, 2], [3, 1], [3, 3]]
+# vertices = [[0, 3], [1, 1], [2, 2], 
+#             [4, 4], [0, 0], [1, 2], 
+#             [3, 1], [3, 3],
+#             ]
 
-showGraph(vertices, quickHull(vertices))
+vertices = [[1, 0], [2, 1], [3, 2], 
+            [4, 4], [0, 0], [0, 2], 
+            [4, 5], [6, 3], [5, 1],
+            [6, 4], [4, 2], [2, 5]
+            ]
+
+convexHull = sorted(quickHull(vertices), key=lambda x: x[0])
+showGraph(vertices, convexHull)

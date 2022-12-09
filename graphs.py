@@ -41,4 +41,3 @@ def showGraph(vertices, convexHull):
 
     # function to show the plot
     plt.show()
-    

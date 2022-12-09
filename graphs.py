@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 # Splits the vertices into x and y values
 def points(vertices):
@@ -9,6 +10,37 @@ def points(vertices):
         x.append(coord[0])
         y.append(coord[1])
     return x, y
+
+def draw_polygon(points):
+    out = [points[0]]
+    current = points[0]
+
+    swap = False
+    while(len(out) < len(points)):
+        next = None
+        curr_dist = 0
+        for point in points:
+            if(point not in out):
+                if(swap and point[1] <= current[1]):
+                    if(next is None or dis(current, point) < curr_dist):
+                        next = point
+                        curr_dist = dis(current, point)
+                elif(not swap and point[1] > current[1]):
+                    if(next is None or dis(current, point) < curr_dist):
+                        next = point
+                        curr_dist = dis(current, point)
+        if(next is None):
+            swap = True
+        else:
+            out.append(next)
+            current = next
+
+    out.append(points[0])
+
+    return out
+
+def dis(p1, p2):
+    return math.sqrt(pow((p1[0]-p2[0]), 2)+pow((p1[1]-p2[1]), 2))
 
 def plotGraph(vertices, convexHull):
     # Splits the vertices into x and y values
@@ -24,11 +56,10 @@ def plotGraph(vertices, convexHull):
             ax.set_title('Given points')
         else:
             ax.set_title('Convex hull')
-            x2, y2 = points(convexHull)
+            x2, y2 = points(draw_polygon(convexHull))
             # Joins the convex hull to itself to show the area covered
-            x2.append(x2[0])
-            y2.append(y2[0])
-            ax.plot(x2, y2, 'o', mec='r', color='none', lw=1, markersize=10)
+            # ax.plot(x2, y2, 'o', mec='r', color='none', lw=1, markersize=10)
+            ax.plot(x2, y2, markersize=10)
         ax.set_xticks(range(x[-1] + 2))
         # This sorts the y values from lowest to highest
         sortedY = sorted(y, key=lambda x: x)

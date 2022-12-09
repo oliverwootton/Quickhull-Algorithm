@@ -155,5 +155,3 @@ vertices = [[1, 0], [2, 1], [3, 2],
 
 convexHull = sorted(quickHull(vertices), key=lambda x: x[0])
 showGraph(vertices, convexHull)
-
-print(convexHull)

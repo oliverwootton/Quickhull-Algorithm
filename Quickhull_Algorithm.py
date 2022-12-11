@@ -25,7 +25,7 @@ def partition(x1, x2, v):
     # Calculate m and c for y = mx + c    
     m = (x2[1] - x1[1]) / (x2[0] - x1[0])
     c = -m * x1[0] + x1[1]
-    
+
     # Iterate over the coordinates to put them in the correct list
     for coord in v:
         # y > mx + c is above the line
@@ -88,7 +88,6 @@ def quickHull2(x1, x2, region, side):
             furthestDistance = distance
             furthestPoint = point
             
-            
     convexHull += [furthestPoint]
     
     # Remove the point that is now apart of the convex hull
@@ -105,7 +104,6 @@ def quickHull2(x1, x2, region, side):
     else:
         convexHull += quickHull2(x1, furthestPoint, point1below, side)
         convexHull += quickHull2(furthestPoint, x2, point2below, side)
-        
     return convexHull
     
 def quickHull(vertices):
@@ -132,13 +130,14 @@ def quickHull(vertices):
     
     # Adds the points to the convex hull
     convexHull += [x1, x2]
-    
+
     # Removes points that are now apart of the convex hull
     sortedPoints.pop(0)
     sortedPoints.pop(-1)
     
     # Determine the points located above and below the line
     above, below = partition(x1, x2, sortedPoints)
+    
     convexHull += quickHull2(x1, x2, above, "above")
     convexHull += quickHull2(x1, x2, below, "below")
     
@@ -156,9 +155,14 @@ vertices = [[0, 3], [1, 1], [2, 2],
 #             [6, 4], [4, 2], [2, 5]
 #             ]
 
-vertices = [[random.randint(0, 6), random.randint(0, 6)] for _ in range(20)]
-print(vertices)
+vertices = [[random.randint(0, 6), random.randint(0, 6)] for _ in range(10)]
+vertices = list(map(list,{*map(tuple, vertices)}))
 
-convexHull = sorted(quickHull(vertices), key=lambda x: x[0])
+convexHull = quickHull(vertices)
+#convexHull = list(map(list,{*map(tuple,convexHull)}))
+convexHull = sorted(convexHull, key=lambda x: x[0])
+
+print(vertices)
 print(convexHull)
+
 showGraph(vertices, convexHull)

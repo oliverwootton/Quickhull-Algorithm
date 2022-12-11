@@ -11,6 +11,7 @@ def points(vertices):
         y.append(coord[1])
     return x, y
 
+# Function to order the vertices to create a polygon 
 def draw_polygon(points):
     out = [points[0]]
     current = points[0]
@@ -39,6 +40,7 @@ def draw_polygon(points):
 
     return out
 
+# Function to calculate the distance
 def dis(p1, p2):
     return math.sqrt(pow((p1[0]-p2[0]), 2)+pow((p1[1]-p2[1]), 2))
 
@@ -57,7 +59,6 @@ def plotGraph(vertices, convexHull):
         else:
             ax.set_title('Convex hull')
             x2, y2 = points(draw_polygon(convexHull))
-            # Joins the convex hull to itself to show the area covered
             # ax.plot(x2, y2, 'o', mec='r', color='none', lw=1, markersize=10)
             ax.plot(x2, y2, markersize=10)
         ax.set_xticks(range(x[-1] + 2))
@@ -70,5 +71,5 @@ def showGraph(vertices, convexHull):
     
     plotGraph(sorted(vertices, key=lambda x: x[0]), convexHull)
 
-    # function to show the plot
+    # Function to show the plot
     plt.show()

@@ -8,7 +8,7 @@ def partition(x1, x2, v):
     Args:
         x1:         First coordinate of the line
         x2:         Second coordinate of the line
-        v:          list of coordinates
+        v:          List of vertices
         
     Returns:
         2 lists:    First list are the coordinates above the line,
@@ -40,8 +40,8 @@ def findDistance(x1, x2, x3):
     Find the distance between the line x1-x2 and a point x3
     
     Args:
-        x1:         First coordinate on the line
-        x2:         Second coordinate on the line
+        x1:         First coordinate of the line
+        x2:         Second coordinate of the line
         x3:         Point to measure the distance from
         
     Returns:
@@ -61,10 +61,12 @@ def quickHull2(x1, x2, region, side):
     hull and repeats on the new region not in the hull
     
     Args:
-        x1, x2: 
-        region: 
-        side:       Determines the whether the points are above 
-                    or below the line
+        x1:         First coordinate of the line
+        x2:         Second coordinate of the line
+        region:     The points that remain outside the convex hull 
+                    on the outside of the line
+        side:       Determines the whether the points are above or
+                    below the line
         
     Returns:
         list: Coordinates of the convex hull
@@ -91,7 +93,7 @@ def quickHull2(x1, x2, region, side):
     # Remove the point that is now apart of the convex hull
     region.remove(furthestPoint)
     
-    # determine the partition formed from two line x1-furthestPoint and x2-furthestPoint
+    # Determine the partition formed from two line x1-furthestPoint and x2-furthestPoint
     point1above, point1below = partition(x1, furthestPoint, region)
     point2above, point2below = partition(x2, furthestPoint, region)
     

@@ -73,3 +73,9 @@ def showGraph(vertices, convexHull):
 
     # Function to show the plot
     plt.show()
+ 
+# Function to output one graph   
+def oneGraph(vertices):
+    x, y = points(vertices)
+    plt.plot(x, y, '.', color='k')
+    plt.show()

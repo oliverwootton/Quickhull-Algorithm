@@ -1,5 +1,6 @@
 import math
-from graphs import showGraph
+from Plot_Graphs import oneGraph, showGraph
+import random
 
 def partition(x1, x2, v):
     """
@@ -144,16 +145,20 @@ def quickHull(vertices):
     return convexHull
     
 
-# vertices = [[0, 3], [1, 1], [2, 2], 
-#             [4, 4], [0, 0], [1, 2], 
-#             [3, 1], [3, 3],
-#             ]
-
-vertices = [[1, 0], [2, 1], [3, 2], 
-            [4, 4], [0, 0], [0, 2], 
-            [4, 5], [6, 3], [5, 1],
-            [6, 4], [4, 2], [2, 5]
+vertices = [[0, 3], [1, 1], [2, 2], 
+            [4, 4], [0, 0], [1, 2], 
+            [3, 1], [3, 3],
             ]
 
+# vertices = [[1, 0], [2, 1], [3, 2], 
+#             [4, 4], [0, 0], [0, 2], 
+#             [4, 5], [6, 3], [5, 1],
+#             [6, 4], [4, 2], [2, 5]
+#             ]
+
+vertices = [[random.randint(0, 6), random.randint(0, 6)] for _ in range(20)]
+print(vertices)
+
 convexHull = sorted(quickHull(vertices), key=lambda x: x[0])
+print(convexHull)
 showGraph(vertices, convexHull)

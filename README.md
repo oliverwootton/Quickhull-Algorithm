@@ -1,6 +1,6 @@
 # Quickhull-Algorithm
 
-To run: 
+To run:
 python Quickhull_Algorithm.py
 
 requirements:

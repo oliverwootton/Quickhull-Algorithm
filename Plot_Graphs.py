@@ -59,9 +59,9 @@ def plotGraph(vertices, convexHull):
         else:
             ax.set_title('Convex hull')
             x2, y2 = points(convexHull)
-            #x2, y2 = points(draw_polygon(convexHull))
+            x2, y2 = points(draw_polygon(convexHull))
             ax.plot(x2, y2, 'o', mec='r', color='none', lw=1, markersize=10)
-            #ax.plot(x2, y2, markersize=10)
+            ax.plot(x2, y2, markersize=10)
         ax.set_xticks(range(x[-1] + 2))
         # This sorts the y values from lowest to highest
         sortedY = sorted(y, key=lambda x: x)
